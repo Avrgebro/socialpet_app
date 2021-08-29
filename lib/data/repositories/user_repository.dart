@@ -88,7 +88,7 @@ class UserRepository {
     return currentUser != null;
   }
 
-  Future<String> getUser() async {
+  Future<User> getUser() async {
     
     final String uuid = await _firebaseAuth.currentUser!.uid;
     return uuid;
