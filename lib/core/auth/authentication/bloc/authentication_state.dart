@@ -29,6 +29,18 @@ class Authenticated extends AuthenticationState {
 
 }
 
+class Unregistered extends AuthenticationState {
+  final String uuid;
+
+  Unregistered({required this.uuid});
+
+  @override
+  List<Object> get props => [uuid];
+
+  @override
+  String toString() => 'Unregistered';
+}
+
 class Failure extends AuthenticationState {
   final String message;
 

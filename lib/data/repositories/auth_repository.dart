@@ -2,13 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:socialpet/data/providers/auth_provider.dart';
+import 'package:socialpet/data/providers/user_provider.dart';
 import 'package:socialpet/utils/helpers/apple_sign_in_helpers.dart';
+import 'package:socialpet/data/models/user.dart' as AppUser;
+import 'package:socialpet/utils/services/secure_storage_service.dart';
 
-class UserRepository {
+class AuthRepository {
 
   final FirebaseAuth _firebaseAuth;
 
-  UserRepository({FirebaseAuth? firebaseAuth})
+  AuthRepository({FirebaseAuth? firebaseAuth})
     : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
 
@@ -80,6 +84,8 @@ class UserRepository {
   }
 
   Future<void> signOut() async {
+    await SecureStorage.clearStorage();
+    await AuthProvider.logOutUser();
     return await _firebaseAuth.signOut();
   }
 
@@ -88,11 +94,21 @@ class UserRepository {
     return currentUser != null;
   }
 
-  Future<User> getUser() async {
+  Future<String> signedInUuid() async {
+    return await _firebaseAuth.currentUser!.uid;
+  }
+
+  Future<AppUser.User?> getAuthenticatedUser() async {
     
     final String uuid = await _firebaseAuth.currentUser!.uid;
-    return uuid;
-
+    final Map<String, dynamic>? rawData = await UserProvider.fetchUser(uuid);
+    
+    if(rawData != null) {
+      return AppUser.User.fromMap(rawData);
+    } else {
+      return null;
+    }
+    
 
   }
 

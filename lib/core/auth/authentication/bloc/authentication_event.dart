@@ -12,6 +12,18 @@ class AppLoaded extends AuthenticationEvent {
   String toString() => 'AppLoaded';
 }
 
+class UnregisteredLogIn extends AuthenticationEvent {
+  final String uuid;
+
+  UnregisteredLogIn({required this.uuid});
+
+  @override
+  List<Object> get props => [uuid];
+
+  @override
+  String toString() => 'UnregisteredLogIn';
+}
+
 class UserLoggedIn extends AuthenticationEvent {
   final User user;
 
