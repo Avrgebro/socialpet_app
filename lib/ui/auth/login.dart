@@ -10,8 +10,34 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-       child: null,
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Email'
+                ),
+              ),
+              
+              TextField(
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: InputDecoration(
+                  hintText: 'Password'
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => {},
+                child: Text('Log in')
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
