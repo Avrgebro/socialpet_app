@@ -15,8 +15,12 @@ class SecureStorage {
     await FlutterSecureStorage().delete(key: key);
   }
 
-  static Future<void> clearStorage() async{
+  static Future<void> clearStorage() async {
     await FlutterSecureStorage().deleteAll();
+  }
+
+  static Future<bool> hasKey(String key) async {
+    return await FlutterSecureStorage().containsKey(key: key);
   }
 
 }

@@ -13,8 +13,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   final AuthRepository _authRepository;
 
   AuthenticationBloc({required AuthRepository authRepository}) 
-    : assert (authRepository != null),
-      _authRepository = authRepository,
+    : _authRepository = authRepository,
       super(AuthenticationInitial());
 
   @override

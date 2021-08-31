@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:socialpet/config/constants/app_constants.dart';
 import 'package:socialpet/data/providers/auth_provider.dart';
 import 'package:socialpet/data/providers/user_provider.dart';
+import 'package:socialpet/utils/enums/socials.dart';
 import 'package:socialpet/utils/helpers/apple_sign_in_helpers.dart';
 import 'package:socialpet/data/models/user.dart' as AppUser;
+import 'package:socialpet/utils/helpers/user_credentials_helper.dart';
 import 'package:socialpet/utils/services/secure_storage_service.dart';
 
 class AuthRepository {
@@ -62,13 +65,13 @@ class AuthRepository {
   }
 
   /// Sign in with email and password
-  Future<UserCredential?> signInWithCredentials(String email, String password) async {
+  Future<UserCredential?> signInWithCredentials(UserCredentials credentials) async {
 
     try {
 
       return await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password
+        email: credentials.email,
+        password: credentials.password
       );
 
     } on FirebaseAuthException catch (e) {
@@ -91,11 +94,36 @@ class AuthRepository {
 
   Future<bool> isSignedIn() async {
     final currentUser = await _firebaseAuth.currentUser;
-    return currentUser != null;
+    final oAuthSet = await SecureStorage.hasKey(AppConstants.tokenKey);
+    return currentUser != null && oAuthSet;
   }
 
   Future<String> signedInUuid() async {
     return await _firebaseAuth.currentUser!.uid;
+  }
+
+  Future<AppUser.User?> oAuthLogin(UserCredentials credentials) async {
+    final Map<String, dynamic>? loginData = await AuthProvider.logInUser(credentials);
+
+    if(loginData != null) {
+      SecureStorage.setValue(AppConstants.tokenKey , loginData['token']);
+      return AppUser.User.fromMap(loginData['user'] as Map<String, dynamic>);
+    } else {
+      return null;
+    }
+
+  }
+
+  Future<AppUser.User?> oAuthSocialLogin(String uuid, Socials social) async {
+    final Map<String, dynamic>? loginData = await AuthProvider.logInUserWithSocial(uuid, social);
+
+    if(loginData != null) {
+      SecureStorage.setValue(AppConstants.tokenKey , loginData['token']);
+      return AppUser.User.fromMap(loginData['user'] as Map<String, dynamic>);
+    } else {
+      return null;
+    }
+
   }
 
   Future<AppUser.User?> getAuthenticatedUser() async {
