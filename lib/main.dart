@@ -35,7 +35,11 @@ class _AppState extends State<App> {
     return MaterialApp(
         title: AppConstants.appName,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          //primarySwatch: Color(0xff0072BB),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: Color(0xFF0072BB),
+            secondary: Color(0xFFE18335)
+          )
         ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
                     builder: (context, state) {
