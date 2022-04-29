@@ -13,7 +13,7 @@ class AuthProvider {
   
   static Future<Map<String, dynamic>?> logInUser(UserCredentials credentials) async {
 
-    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}login'), body: credentials.toJson());
+    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/login'), body: credentials.toJson());
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
@@ -30,7 +30,7 @@ class AuthProvider {
 
   static Future<Map<String, dynamic>?> logInUserWithSocial(String uuid, Socials social) async {
 
-    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}social/login'), body: {
+    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/social/login'), body: {
       uuid: uuid,
       social: describeEnum(social) 
     });

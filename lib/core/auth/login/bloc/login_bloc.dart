@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:socialpet/core/auth/authentication/bloc/authentication_bloc.dart';
