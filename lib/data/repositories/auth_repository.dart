@@ -6,7 +6,7 @@ import 'package:socialpet/config/constants/app_constants.dart';
 import 'package:socialpet/data/providers/auth_provider.dart';
 import 'package:socialpet/data/providers/user_provider.dart';
 import 'package:socialpet/utils/enums/socials.dart';
-import 'package:socialpet/utils/helpers/apple_sign_in_helpers.dart';
+import 'package:socialpet/utils/helpers/apple_sign_in_helper.dart';
 import 'package:socialpet/data/models/user.dart' as AppUser;
 import 'package:socialpet/utils/helpers/user_credentials_helper.dart';
 import 'package:socialpet/utils/services/secure_storage_service.dart';

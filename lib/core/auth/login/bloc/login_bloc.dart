@@ -40,6 +40,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if(loginResponse != null) {
           yield LoginSucceded();
         } else {
+          print('API failed');
           throw Exception('Could not retrieve user data');
         }
       } else {
