@@ -103,15 +103,22 @@ class AuthRepository {
   }
 
   Future<AppUser.User?> oAuthLogin(UserCredentials credentials) async {
-    final Map<String, dynamic>? loginData = await AuthProvider.logInUser(credentials);
-
-    if(loginData != null) {
-      SecureStorage.setValue(AppConstants.tokenKey , loginData['token']);
-      return AppUser.User.fromMap(loginData['user'] as Map<String, dynamic>);
-    } else {
-      return null;
+    
+    try {
+      final Map<String, dynamic>? loginData = await AuthProvider.logInUser(credentials);
+      if(loginData != null) {
+        if(loginData.isNotEmpty){
+          SecureStorage.setValue(AppConstants.tokenKey , loginData['token']);
+          return AppUser.User.fromMap(loginData['user'] as Map<String, dynamic>);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
     }
-
   }
 
   Future<AppUser.User?> oAuthSocialLogin(String uuid, Socials social) async {

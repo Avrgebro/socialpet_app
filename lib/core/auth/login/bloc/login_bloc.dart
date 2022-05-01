@@ -40,11 +40,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if(loginResponse != null) {
           yield LoginSucceded();
         } else {
-          print('API failed');
-          throw Exception('Could not retrieve user data');
+          yield LoginUnregistered(uuid: user.user!.uid,);
         }
       } else {
-        throw Exception('Could not retrieve user data');
+        print('Firebase failed');
+        throw Exception('Could not retrieve user data from Firebase');
       }
     
     } catch (e) {

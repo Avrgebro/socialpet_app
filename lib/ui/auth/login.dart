@@ -1,8 +1,10 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialpet/core/auth/authentication/bloc/authentication_bloc.dart';
 import 'package:socialpet/core/auth/login/bloc/login_bloc.dart';
 import 'package:socialpet/data/repositories/auth_repository.dart';
+import 'package:socialpet/ui/auth/register.dart';
 import 'package:socialpet/utils/helpers/user_credentials_helper.dart';
 import 'package:socialpet/utils/mixins/input_validation_mixin.dart';
 
@@ -18,6 +20,13 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late AuthenticationBloc _authenticationBloc;
+  
+  @override
+  void initState() {
+    super.initState();
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+  }
 
   @override
   void dispose() {
@@ -78,6 +87,11 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                             backgroundColor: Colors.green[500]!,
 
                           )..show(context);
+                        } else if(state is LoginUnregistered){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterPage(uuid: state.uuid,))
+                            );
                         }
                       },
                       child: Form(

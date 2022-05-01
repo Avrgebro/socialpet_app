@@ -12,13 +12,18 @@ import 'package:socialpet/utils/services/secure_storage_service.dart';
 class AuthProvider {
   
   static Future<Map<String, dynamic>?> logInUser(UserCredentials credentials) async {
+    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/login'),
+      body: credentials.toJson(),
+      headers: {"Content-Type": "application/json"},
+    );
+    
+    final decoded = jsonDecode(response.body);
 
-    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/login'), body: credentials.toJson());
-
-    if (response.statusCode == 200) {
-      final decoded = jsonDecode(response.body);
-      if(decoded['success']){
+    if ([401, 200].contains(response.statusCode)) {
+      if(decoded['status'] == 'success'){
         return decoded['data'] as Map<String, dynamic>;
+      } else if (decoded['status'] == 'error') {
+        return new Map<String, dynamic>();
       } else {
         return null;
       }
