@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:socialpet/config/constants/app_constants.dart';
 import 'package:socialpet/data/models/user.dart';
 import 'package:socialpet/data/repositories/auth_repository.dart';
+import 'package:socialpet/utils/services/secure_storage_service.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -32,11 +34,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   Stream<AuthenticationState> _mapAppLoadedToState() async* {
-
+    yield Uninitialized();
     try {
       final isSignedIn = await _authRepository.isSignedIn();
       if (isSignedIn) {
-        final user = await _authRepository.getAuthenticatedUser();
+        final user = await _authRepository.getAuthenticatedUser();  
         if (user != null){
           yield Authenticated(user: user);
         } else {
@@ -46,8 +48,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       } else {
         yield Unauthenticated();
       }
-    } catch (_) {
-      yield Failure(message: 'Something went wrong');
+    } catch (e) {
+      yield Failure(message: e.toString());
     }
 
   }

@@ -51,8 +51,10 @@ class _AppState extends State<App> {
                     return RegisterPage(uuid: state.uuid);
                   } else if (state is Failure) {
                     return ErrorPage(error: state.message);
-                  } else {
+                  } else if (state is Unauthenticated) {
                     return LoginPage();
+                  } else {
+                    return ErrorPage(error: 'Unhandled error');
                   }
                 }),
               );

@@ -87,8 +87,8 @@ class AuthRepository {
   }
 
   Future<void> signOut() async {
-    await SecureStorage.clearStorage();
     await AuthProvider.logOutUser();
+    await SecureStorage.deleteValue(AppConstants.tokenKey);
     return await _firebaseAuth.signOut();
   }
 
@@ -135,16 +135,14 @@ class AuthRepository {
 
   Future<AppUser.User?> getAuthenticatedUser() async {
     
-    final String uuid = await _firebaseAuth.currentUser!.uid;
-    final Map<String, dynamic>? rawData = await UserProvider.fetchUser(uuid);
-    
+    final Map<String, dynamic>? rawData = await UserProvider.fetchUser();
+    print('hi');
     if(rawData != null) {
       return AppUser.User.fromMap(rawData);
     } else {
       return null;
     }
     
-
   }
 
 

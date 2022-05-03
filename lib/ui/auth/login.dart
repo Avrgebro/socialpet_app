@@ -72,6 +72,7 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
 
                           )..show(context);
                         } else if(state is LoginSucceded){
+                          BlocProvider.of<AuthenticationBloc>(context).add(UserLoggedIn());
                           Flushbar(
                             title:  "Welcome Back!",
                             message:  "You've successfully logged in",

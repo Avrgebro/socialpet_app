@@ -14,7 +14,9 @@ class AuthProvider {
   static Future<Map<String, dynamic>?> logInUser(UserCredentials credentials) async {
     final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/login'),
       body: credentials.toJson(),
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        },
     );
     
     final decoded = jsonDecode(response.body);
@@ -56,7 +58,7 @@ class AuthProvider {
   static Future<Map<String, dynamic>?> logOutUser() async {
     
     final String? token = await SecureStorage.getValue(AppConstants.tokenKey);
-    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}login'),
+    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/logout'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token'
       }
@@ -64,8 +66,8 @@ class AuthProvider {
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
-      if(decoded['success']){
-        return decoded['data'] as Map<String, dynamic>;
+      if(decoded['status'] == 'success'){
+        return new Map<String, dynamic>();
       } else {
         return null;
       }
