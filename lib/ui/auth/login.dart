@@ -5,6 +5,7 @@ import 'package:socialpet/core/auth/authentication/bloc/authentication_bloc.dart
 import 'package:socialpet/core/auth/login/bloc/login_bloc.dart';
 import 'package:socialpet/data/repositories/auth_repository.dart';
 import 'package:socialpet/ui/auth/register.dart';
+import 'package:socialpet/utils/enums/socials.dart';
 import 'package:socialpet/utils/helpers/user_credentials_helper.dart';
 import 'package:socialpet/utils/mixins/input_validation_mixin.dart';
 
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                             duration:  Duration(seconds: 3),
                             margin: EdgeInsets.all(8),
                             borderRadius: BorderRadius.circular(8),
-                            flushbarPosition: FlushbarPosition.TOP,
+                            flushbarPosition: FlushbarPosition.BOTTOM,
                             icon: Icon(
                               Icons.info_outline,
                               size: 28.0,
@@ -79,7 +80,7 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                             duration:  Duration(seconds: 3),
                             margin: EdgeInsets.all(8),
                             borderRadius: BorderRadius.circular(8),
-                            flushbarPosition: FlushbarPosition.TOP,
+                            flushbarPosition: FlushbarPosition.BOTTOM,
                             icon: Icon(
                               Icons.check_circle_outline_rounded,
                               size: 28.0,
@@ -158,55 +159,61 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => {},
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              minimumSize: Size(100.0, 60.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              )
-                            ),
-                            child: Image.asset(
-                              'assets/images/social/google.png',
-                              scale: 18.0
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => {},
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              minimumSize: Size(100.0, 60.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              )
-                            ),
-                            child: Image.asset(
-                              'assets/images/social/facebook.png',
-                              scale: 18.0
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => {},
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              minimumSize: Size(100.0, 60.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              )
-                            ),
-                            child: Image.asset(
-                              'assets/images/social/twitter.png',
-                              scale: 18.0
-                            ),
-                          ),
-                          
-                          
-                        ],
+                      child: BlocBuilder<LoginBloc, LoginState>(
+                        builder: (context, state) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () => {
+                                  context.read<LoginBloc>().add(LoginWithSocialSelected(social: Socials.google))
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.white,
+                                  minimumSize: Size(100.0, 60.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)
+                                  )
+                                ),
+                                child: Image.asset(
+                                  'assets/images/social/google.png',
+                                  scale: 18.0
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => {},
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.white,
+                                  minimumSize: Size(100.0, 60.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)
+                                  )
+                                ),
+                                child: Image.asset(
+                                  'assets/images/social/facebook.png',
+                                  scale: 18.0
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => {},
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.white,
+                                  minimumSize: Size(100.0, 60.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)
+                                  )
+                                ),
+                                child: Image.asset(
+                                  'assets/images/social/twitter.png',
+                                  scale: 18.0
+                                ),
+                              ),
+                              
+                              
+                            ],
+                          );
+                        }
                       ),
                     ),
                     Expanded(
