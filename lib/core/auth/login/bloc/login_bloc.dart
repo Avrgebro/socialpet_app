@@ -72,7 +72,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           break;
       }
 
-      final loginResponse = await _authRepository.oAuthSocialLogin(user.user!.uid, event.social);
+      final loginResponse = await _authRepository.oAuthSocialLogin(user.user!.email! ,user.user!.uid);
       if(loginResponse != null) {
         yield LoginSucceded();
       } else {

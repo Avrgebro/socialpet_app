@@ -35,11 +35,11 @@ class AuthProvider {
 
   }
 
-  static Future<Map<String, dynamic>?> logInUserWithSocial(String uuid, Socials social) async {
+  static Future<Map<String, dynamic>?> logInUserWithSocial(String email, String uuid) async {
 
-    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/social/login'), body: {
-      uuid: uuid,
-      social: describeEnum(social) 
+    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/login'), body: {
+      'email': email,
+      'firebase_uuid': uuid 
     });
 
     if (response.statusCode == 200) {

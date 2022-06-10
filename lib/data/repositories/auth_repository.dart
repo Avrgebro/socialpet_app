@@ -121,8 +121,8 @@ class AuthRepository {
     }
   }
 
-  Future<AppUser.User?> oAuthSocialLogin(String uuid, Socials social) async {
-    final Map<String, dynamic>? loginData = await AuthProvider.logInUserWithSocial(uuid, social);
+  Future<AppUser.User?> oAuthSocialLogin(String email, String uuid) async {
+    final Map<String, dynamic>? loginData = await AuthProvider.logInUserWithSocial(email, uuid);
 
     if(loginData != null) {
       SecureStorage.setValue(AppConstants.tokenKey , loginData['token']);
