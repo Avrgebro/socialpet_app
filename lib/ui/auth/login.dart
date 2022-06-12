@@ -1,4 +1,5 @@
 import 'package:another_flushbar/flushbar.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialpet/core/auth/authentication/bloc/authentication_bloc.dart';
@@ -58,8 +59,8 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                       listener: (context, state) {
                         if(state is LoginFailed){
                           Flushbar(
-                            title:  "Oops! we could not log you in",
-                            message:  "Please make sure you've entered correct credentials",
+                            title:  "Uups! no pudimos ingresar",
+                            message:  "Asegurate de haber ingresado un email y contraseña correctos",
                             duration:  Duration(seconds: 3),
                             margin: EdgeInsets.all(8),
                             borderRadius: BorderRadius.circular(8),
@@ -75,8 +76,8 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                         } else if(state is LoginSucceded){
                           BlocProvider.of<AuthenticationBloc>(context).add(UserLoggedIn());
                           Flushbar(
-                            title:  "Welcome Back!",
-                            message:  "You've successfully logged in",
+                            title:  "Bienvenido de vuelta!!",
+                            message:  "Has ingresado correctamente",
                             duration:  Duration(seconds: 3),
                             margin: EdgeInsets.all(8),
                             borderRadius: BorderRadius.circular(8),
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                         } else if(state is LoginUnregistered){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => RegisterPage(uuid: state.uuid,))
+                            MaterialPageRoute(builder: (context) => RegisterPage(user: state.user,))
                             );
                         }
                       },
@@ -106,9 +107,10 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                                 controller: emailController,
                                 decoration: InputDecoration(
                                   hintText: 'Email',
-                                  border: OutlineInputBorder()
+                                  border: OutlineInputBorder(),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8)
                                 ),
-                                validator: (email) => isEmailValid(email!) ? null : 'Enter a valid email',
+                                validator: (email) => isEmailValid(email!) ? null : 'Email inválido',
                               ),
                             ),
                             Padding(
@@ -120,10 +122,11 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                                 autocorrect: false,
                                 keyboardType: TextInputType.visiblePassword,
                                 decoration: InputDecoration(
-                                  hintText: 'Password',
-                                  border: OutlineInputBorder()
+                                  hintText: 'Contraseña',
+                                  border: OutlineInputBorder(),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8)
                                 ),
-                                validator: (password) =>  isPasswordValid(password!)! ? null : 'Enter a valid password',
+                                validator: (password) =>  isPasswordValid(password!)! ? null : 'Ingresa una contraseña válida',
                               ),
                             ),
                             Padding(
@@ -144,7 +147,7 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                                           context.read<LoginBloc>().add(LoginWithCredentialsSelected(credentials: UserCredentials(email: emailController.text, password: passwordController.text)))
                                         }
                                       },
-                                      child: Text('Sign in')
+                                      child: Text('Ingresar')
                                     );
                                 }
                               ),
@@ -155,7 +158,7 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 48.0, bottom: 12.0),
-                      child: Text('- Or sign in with -'),
+                      child: Text('- O ingresa con -'),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -220,7 +223,27 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                       child: Container(
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: Text('Not registered yet? click here'),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Aún no tienes cuenta?',
+                                  style: new TextStyle(color: Colors.black),
+                                ),
+                                TextSpan(
+                                  text: 'Registrate',
+                                  style: new TextStyle(color: Colors.blue),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => RegisterPage())
+                                        )
+                                    }
+                                )
+                              ]
+                            )
+                          ),
                         ),
                       ) 
                     )

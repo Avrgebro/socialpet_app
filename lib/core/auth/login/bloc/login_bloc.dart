@@ -40,7 +40,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if(loginResponse != null) {
           yield LoginSucceded();
         } else {
-          yield LoginUnregistered(uuid: user.user!.uid,);
+          yield LoginUnregistered(user: user.user!,);
         }
       } else {
         print('Firebase failed');

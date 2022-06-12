@@ -13,12 +13,12 @@ class AppLoaded extends AuthenticationEvent {
 }
 
 class UnregisteredLogIn extends AuthenticationEvent {
-  final String uuid;
+  final fb.User user;
 
-  UnregisteredLogIn({required this.uuid});
+  UnregisteredLogIn({required this.user});
 
   @override
-  List<Object> get props => [uuid];
+  List<Object> get props => [user];
 
   @override
   String toString() => 'UnregisteredLogIn';

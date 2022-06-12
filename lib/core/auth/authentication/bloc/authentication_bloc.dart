@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:socialpet/config/constants/app_constants.dart';
 import 'package:socialpet/data/models/user.dart';
 import 'package:socialpet/data/repositories/auth_repository.dart';
-import 'package:socialpet/utils/services/secure_storage_service.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -42,7 +41,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         if (user != null){
           yield Authenticated(user: user);
         } else {
-          yield Unregistered(uuid: await _authRepository.signedInUuid());
+          yield Unregistered(user: await _authRepository.signedInFirebaseUser());
         }
         
       } else {
@@ -70,6 +69,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   Stream<AuthenticationState> _mapUnregisteredLogInToState() async* {
-    yield Unregistered(uuid: await _authRepository.signedInUuid());
+    yield Unregistered(user: await _authRepository.signedInFirebaseUser());
   }
 }

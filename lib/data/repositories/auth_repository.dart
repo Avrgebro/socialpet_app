@@ -102,6 +102,10 @@ class AuthRepository {
     return await _firebaseAuth.currentUser!.uid;
   }
 
+  Future<User> signedInFirebaseUser() async {
+    return await _firebaseAuth.currentUser!;
+  }
+
   Future<AppUser.User?> oAuthLogin(UserCredentials credentials) async {
     
     try {
@@ -136,7 +140,6 @@ class AuthRepository {
   Future<AppUser.User?> getAuthenticatedUser() async {
     
     final Map<String, dynamic>? rawData = await UserProvider.fetchUser();
-    print('hi');
     if(rawData != null) {
       return AppUser.User.fromMap(rawData);
     } else {

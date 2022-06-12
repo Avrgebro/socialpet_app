@@ -51,7 +51,7 @@ class _AppState extends State<App> {
                   } else if (state is Authenticated) {
                     return HomePage(user: state.user);
                   } else if (state is Unregistered) {
-                    return RegisterPage(uuid: state.uuid);
+                    return RegisterPage(user: state.user);
                   } else if (state is Failure) {
                     return ErrorPage(error: state.message);
                   } else if (state is Unauthenticated) {

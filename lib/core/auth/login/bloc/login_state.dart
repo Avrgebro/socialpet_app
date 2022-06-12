@@ -14,12 +14,12 @@ class LoginAttempted extends LoginState {}
 class LoginSucceded extends LoginState {}
 
 class LoginUnregistered extends LoginState {
-  final String uuid;
+  final User user;
 
-  LoginUnregistered({required this.uuid});
+  LoginUnregistered({required this.user});
 
   @override
-  List<Object> get props => [uuid];
+  List<Object> get props => [user];
 
   @override
   String toString() => 'LoginUnregistered';

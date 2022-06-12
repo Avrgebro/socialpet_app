@@ -30,12 +30,12 @@ class Authenticated extends AuthenticationState {
 }
 
 class Unregistered extends AuthenticationState {
-  final String uuid;
+  final fb.User user;
 
-  Unregistered({required this.uuid});
+  Unregistered({required this.user});
 
   @override
-  List<Object> get props => [uuid];
+  List<Object> get props => [user];
 
   @override
   String toString() => 'Unregistered';
