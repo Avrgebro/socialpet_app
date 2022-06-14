@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -122,6 +124,33 @@ class AuthRepository {
       }
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  Future<AppUser.User?> registerUser(Map<String, dynamic> userData) async {
+    try {
+      final Map<String, dynamic>? registerData = await AuthProvider.registerUser(userData);
+      if(registerData != null) {
+        if(registerData.isNotEmpty){
+          print(registerData);
+          SecureStorage.setValue(AppConstants.tokenKey , registerData['token']);
+          return AppUser.User.fromMap(registerData['user'] as Map<String, dynamic>);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> deleteUserFromFirebase(String email) async {
+    try {
+      final response = await _firebaseAuth.currentUser!.delete();
+    } catch (e) {
+      print('auth_repository:151 - ' + e.toString());
     }
   }
 

@@ -43,7 +43,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginUnregistered(user: user.user!,);
         }
       } else {
-        print('Firebase failed');
         throw Exception('Could not retrieve user data from Firebase');
       }
     

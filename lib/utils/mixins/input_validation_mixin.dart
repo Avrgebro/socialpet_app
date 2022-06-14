@@ -4,7 +4,7 @@ mixin InputValidationMixin {
   }
 
   bool doPasswordsMatch(String pass, String confirmation){
-    return identical(pass, confirmation);
+    return pass == confirmation;
   }
 
   bool isEmailValid(String email) {

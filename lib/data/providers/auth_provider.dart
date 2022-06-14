@@ -35,6 +35,30 @@ class AuthProvider {
 
   }
 
+  static Future<Map<String, dynamic>?> registerUser(Map<String, dynamic> userData) async {
+    final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/register'),
+      body: json.encode(userData),
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        },
+    );
+    
+    final decoded = jsonDecode(response.body);
+
+    if ([401, 200].contains(response.statusCode)) {
+      if(decoded['status'] == 'success'){
+        return decoded['data'] as Map<String, dynamic>;
+      } else if (decoded['status'] == 'error') {
+        return new Map<String, dynamic>();
+      } else {
+        return null;
+      }
+    } else {
+      throw Exception('Failed to execute: ${response.statusCode}');
+    }
+
+  }
+
   static Future<Map<String, dynamic>?> logInUserWithSocial(String email, String uuid) async {
 
     final response = await http.post(Uri.parse('${ApiPathConstants.auth_base}/login'), body: {

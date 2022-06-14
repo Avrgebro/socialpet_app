@@ -10,14 +10,12 @@ class UserProvider {
   
   static Future<Map<String, dynamic>?> fetchUser() async {
     final token = await SecureStorage.getValue(AppConstants.tokenKey);
-    print(token);
     final response = await http.get(Uri.parse('${ApiPathConstants.user_base}'),
       headers: {
         HttpHeaders.contentTypeHeader: "application/json",
         HttpHeaders.authorizationHeader: "Bearer " + token!
       },
     );
-    print(response.body);
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
       return decoded as Map<String, dynamic>;

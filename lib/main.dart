@@ -15,7 +15,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final fcmToken = await FirebaseMessaging.instance.getToken();
-  print(fcmToken);
   runApp(BlocProvider(
       create: (context) {
         return AuthenticationBloc(authRepository: AuthRepository())
